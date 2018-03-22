@@ -1,14 +1,14 @@
-"""This module provides summaries for the Greeter plugin."""
+"""This module provides summaries for the roi plugin."""
 # How the plugin gets data.
 
 import tensorflow as tf
 
 
-PLUGIN_NAME = 'greeter'
+PLUGIN_NAME = 'roi'
 
 
 def op(name,
-       guest,
+       filter_values,
        display_name=None,
        description=None,
        collections=None):
@@ -30,18 +30,19 @@ def op(name,
   # By having the display_name default to the name argument, we make
   # the TensorBoard display clearer.
   if display_name is None:
-    display_name = name
+    # display_name = name
+    display_name = 'roi_stuff-disp-name'
 
 
   summary_metadata = tf.SummaryMetadata()
   # We could put additional metadata other than the PLUGIN_NAME,
   # but we don't need any metadata for this simple example.
   summary_metadata.plugin_data.add(plugin_name=PLUGIN_NAME, content="")
-  message = tf.string_join(['Hello, ', guest, '!'])
+  data = tf.constant(filter_values)
   # Return a summary op that is properly configured.
   return tf.summary.tensor_summary(
     name,
-    message,
+    data,
     display_name=display_name,
     summary_metadata=summary_metadata,
     summary_description=description,

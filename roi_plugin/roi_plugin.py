@@ -6,13 +6,13 @@ from werkzeug import wrappers
 from tensorboard.backend import http_util
 from tensorboard.plugins import base_plugin
 
-class GreeterPlugin(base_plugin.TBPlugin):
+class RoiPlugin(base_plugin.TBPlugin):
   """A plugin that serves greetings recorded during model runs."""
 
   # This static property will also be included within routes (URL paths)
   # offered by this plugin. This property must uniquely identify this plugin
   # from all other plugins.
-  plugin_name = 'greeter'
+  plugin_name = 'roi'
 
   def __init__(self, context):
     """Instantiates a GreeterPlugin.
@@ -61,7 +61,7 @@ class GreeterPlugin(base_plugin.TBPlugin):
     # @wrappers.Request.application.
     return {
         '/tags': self.tags_route,
-        '/greetings': self.greetings_route,
+        '/roi_stuff': self.roi_route,
     }
 
   def is_active(self):
@@ -92,17 +92,18 @@ class GreeterPlugin(base_plugin.TBPlugin):
     }
 
   @wrappers.Request.application
-  def greetings_route(self, request):
-    """A route that returns the greetings associated with a tag.
+  def roi_route(self, request):
+    """A route that returns the ROI associated with a tag.
 
     Returns:
-      A JSON list of greetings associated with the run and tag
+      A JSON list of ROI associated with the run and tag
       combination.
     """
     run = request.args.get('run')
     tag = request.args.get('tag')
+    print('roi_route')
 
-    # We fetch all the tensor events that contain greetings.
+    # We fetch all the tensor events that contain roi_stuff.
     tensor_events = self._multiplexer.Tensors(run, tag)
 
     # We convert the tensor data to text.
