@@ -35,7 +35,7 @@ def run(logdir, run_name, filter_weights):
 
   tf.reset_default_graph()
 
-  input_ = tf.placeholder(tf.float32, shape=(1,96))
+  input_ = tf.placeholder(tf.float32)
 
   summary_op = roi_summary.op("roi_stuff", input_)
 
@@ -43,12 +43,12 @@ def run(logdir, run_name, filter_weights):
 
   sess = tf.Session()
 
-  summary = sess.run(summary_op, feed_dict={input_: filter_weights})
+  summary = sess.run(summary_op, feed_dict={input_: filter_weights[0]})
   writer.add_summary(summary)
 
   # Demonstrate that we can also add summaries without using the
   # TensorFlow session or graph.
-  # summary = greeter_summary.pb("greetings", extra_character)
+  # summary = roi_summary.pb("greetings", extra_character)
   # writer.add_summary(summary)
 
   writer.close()
@@ -57,9 +57,9 @@ def run(logdir, run_name, filter_weights):
 def run_all(logdir, unused_verbose=False):
   """Run the simulation for every logdir.
   """
-  run(logdir, "run_1", np.random.randint(1,400, (1,96)))
-  run(logdir, "run_2", np.random.randint(1,500, (1,96)))
-  run(logdir, "run_2", np.random.randint(1,600, (1,96)))
+  run(logdir, "run_1", np.random.rand(1,96))
+  run(logdir, "run_2", np.random.rand(1,96))
+  run(logdir, "run_3", np.random.rand(1,96))
 
 def main(unused_argv):
   print('Saving output to %s.' % LOGDIR)

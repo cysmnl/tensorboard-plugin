@@ -1,3 +1,7 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 import tensorflow as tf
 import numpy as np
 import six
@@ -37,14 +41,13 @@ class RoiPlugin(base_plugin.TBPlugin):
     # This is a dictionary mapping from run to (tag to string content).
     # To be clear, the values of the dictionary are dictionaries.
     all_runs = self._multiplexer.PluginRunToTagToContent(
-        GreeterPlugin.plugin_name)
-
+        RoiPlugin.plugin_name)
     # tagToContent is itself a dictionary mapping tag name to string
     # content. We retrieve the keys of that dictionary to obtain a
     # list of tags associated with each run.
     response = {
-        run: tagToContent.keys()
-             for (run, tagToContent) in all_runs.items()
+        run: list(tagToContent.keys())
+        for (run, tagToContent) in all_runs.items()
     }
     return http_util.Respond(request, response, 'application/json')
 
@@ -75,7 +78,7 @@ class RoiPlugin(base_plugin.TBPlugin):
     """
 
     all_runs = self._multiplexer.PluginRunToTagToContent(
-        GreeterPlugin.plugin_name)
+        RoiPlugin.plugin_name)
 
     # The plugin is active if any of the runs has a tag relevant
     # to the plugin.
@@ -101,7 +104,6 @@ class RoiPlugin(base_plugin.TBPlugin):
     """
     run = request.args.get('run')
     tag = request.args.get('tag')
-    print('roi_route')
 
     # We fetch all the tensor events that contain roi_stuff.
     tensor_events = self._multiplexer.Tensors(run, tag)

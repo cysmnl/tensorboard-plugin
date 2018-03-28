@@ -30,22 +30,22 @@ def op(name,
   # By having the display_name default to the name argument, we make
   # the TensorBoard display clearer.
   if display_name is None:
-    # display_name = name
-    display_name = 'roi_stuff-disp-name'
+    display_name = name
+    # display_name = 'roi_stuff-disp-name'
 
+  # # We could put additional metadata other than the PLUGIN_NAME,
+  # # but we don't need any metadata for this simple example.
+  summary_metadata = tf.SummaryMetadata(
+      display_name=display_name,
+      summary_description=description,
+      plugin_data=tf.SummaryMetadata.PluginData(
+          plugin_name=PLUGIN_NAME))  
 
-  summary_metadata = tf.SummaryMetadata()
-  # We could put additional metadata other than the PLUGIN_NAME,
-  # but we don't need any metadata for this simple example.
-  summary_metadata.plugin_data.add(plugin_name=PLUGIN_NAME, content="")
-  data = tf.constant(filter_values)
   # Return a summary op that is properly configured.
   return tf.summary.tensor_summary(
     name,
-    data,
-    display_name=display_name,
+    filter_values,
     summary_metadata=summary_metadata,
-    summary_description=description,
     collections=collections)
 
 

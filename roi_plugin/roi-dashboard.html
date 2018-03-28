@@ -27,7 +27,7 @@ limitations under the License.
 <!--
   A frontend that displays a set of greeter-cards.
 -->
-<dom-module id="greeter-dashboard">
+<dom-module id="roi-dashboard">
   <template>
     <tf-dashboard-layout>
       <div class="sidebar">
@@ -57,7 +57,7 @@ limitations under the License.
             and consider filing an issue on GitHub.
           </div>
         </template>
-        <template is="dom-if" if="[[!_dataNotFound]]">
+        <template is="dom-if" if="[[!_dataNotFound]]">         
           <paper-input
             no-label-float
             label="Filter tags (regular expressions supported)"
@@ -76,11 +76,11 @@ limitations under the License.
                   <template is="dom-if" if="[[page.active]]">
                     <div class="layout horizontal wrap">
                       <template is="dom-repeat" items="[[page.items]]">
-                        <greeter-card
+                        <roi-card
                           run="[[item.run]]"
                           tag="[[item.tag]]"
                           request-manager="[[_requestManager]]"
-                          ></greeter-card>
+                          ></roi-card>
                       </template>
                     </div>
                   </template>
@@ -105,7 +105,7 @@ limitations under the License.
     "use strict";
 
     Polymer({
-      is: "greeter-dashboard",
+      is: "roi-dashboard",
       properties: {
         _selectedRuns: Array,
         _runToTag: Object,  // map<run: string, tags: string[]>
@@ -133,7 +133,8 @@ limitations under the License.
         });
       },
       _fetchTags() {
-        const url = tf_backend.getRouter().pluginRoute('roi_stuff', '/tags');
+        const url = tf_backend.getRouter().pluginRoute('roi', '/tags');
+        console.log(url)
         return this._requestManager.request(url).then(runToTag => {
           if (_.isEqual(runToTag, this._runToTag)) {
             // No need to update anything if there are no changes.
@@ -156,7 +157,7 @@ limitations under the License.
 
     tf_tensorboard.registerDashboard({
       plugin: 'roi',
-      elementName: 'greeter-dashboard',
+      elementName: 'roi-dashboard',
     });
 
   </script>

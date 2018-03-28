@@ -25,7 +25,7 @@ limitations under the License.
 <!--
   greeter-card loads greeting data from the greeter_plugin backend, and renders it.
 -->
-<dom-module id="greeter-card">
+<dom-module id="roi-card">
   <template>
     <tf-card-heading title="[[tag]]" color="[[_runColor]]">
       [[run]]
@@ -53,7 +53,7 @@ limitations under the License.
     "use strict";
 
     Polymer({
-      is: "greeter-card",
+      is: "roi-card",
       properties: {
         run: String,
         tag: String,
